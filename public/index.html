@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat</title>
+  </head>
+  <body>
+    <!-- Navbar with Contact Us button -->
+    <nav>
+      <button onclick="window.location.href='/contactus'">Contact Us</button>
+    </nav>
+
+    <h1>Send Message</h1>
+    <form action="/send" method="POST">
+      <input type="hidden" name="username" id="username" />
+      <textarea
+        name="message"
+        placeholder="Type your message"
+        required
+      ></textarea>
+      <button type="submit">Send</button>
+    </form>
+    <h2>Messages:</h2>
+    <pre id="messages"></pre>
+
+    <script>
+      document.getElementById("username").value =
+        localStorage.getItem("username");
+
+      async function loadMessages() {
+        const response = await fetch("/messages");
+        const messages = await response.text();
+        document.getElementById("messages").textContent = messages;
+      }
+
+      loadMessages();
+      setInterval(loadMessages, 1000); // Refresh messages every second
+    </script>
+  </body>
+</html>
